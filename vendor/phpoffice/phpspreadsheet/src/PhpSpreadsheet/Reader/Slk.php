@@ -9,7 +9,6 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Slk extends BaseReader
 {
@@ -169,7 +168,7 @@ class Slk extends BaseReader
                 foreach ($rowData as $rowDatum) {
                     switch ($rowDatum[0]) {
                         case 'X':
-                            $columnIndex = (int) substr($rowDatum, 1) - 1;
+                            $columnIndex = substr($rowDatum, 1) - 1;
 
                             break;
                         case 'Y':
@@ -251,7 +250,7 @@ class Slk extends BaseReader
                     }
                     //    Bracketed R references are relative to the current row
                     if ($rowReference[0] == '[') {
-                        $rowReference = (int) $row + (int) trim($rowReference, '[]');
+                        $rowReference = $row + trim($rowReference, '[]');
                     }
                     $columnReference = $cellReference[4][0];
                     //    Empty C reference is the current column
@@ -260,7 +259,7 @@ class Slk extends BaseReader
                     }
                     //    Bracketed C references are relative to the current column
                     if ($columnReference[0] == '[') {
-                        $columnReference = (int) $column + (int) trim($columnReference, '[]');
+                        $columnReference = $column + trim($columnReference, '[]');
                     }
                     $A1CellReference = Coordinate::stringFromColumnIndex($columnReference) . $rowReference;
 
@@ -419,14 +418,14 @@ class Slk extends BaseReader
         if ($columnWidth > '') {
             if ($startCol == $endCol) {
                 $startCol = Coordinate::stringFromColumnIndex((int) $startCol);
-                $spreadsheet->getActiveSheet()->getColumnDimension($startCol)->setWidth((float) $columnWidth);
+                $spreadsheet->getActiveSheet()->getColumnDimension($startCol)->setWidth($columnWidth);
             } else {
                 $startCol = Coordinate::stringFromColumnIndex($startCol);
                 $endCol = Coordinate::stringFromColumnIndex($endCol);
                 $spreadsheet->getActiveSheet()->getColumnDimension($startCol)->setWidth((float) $columnWidth);
                 do {
-                    $spreadsheet->getActiveSheet()->getColumnDimension(++$startCol)->setWidth((float) $columnWidth);
-                } while ($startCol !== $endCol);
+                    $spreadsheet->getActiveSheet()->getColumnDimension(++$startCol)->setWidth($columnWidth);
+                } while ($startCol != $endCol);
             }
         }
     }
@@ -517,7 +516,7 @@ class Slk extends BaseReader
             $spreadsheet->createSheet();
         }
         $spreadsheet->setActiveSheetIndex($this->sheetIndex);
-        $spreadsheet->getActiveSheet()->setTitle(substr(basename($pFilename, '.slk'), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
+        $spreadsheet->getActiveSheet()->setTitle(basename($pFilename, '.slk'));
 
         // Loop through file
         $column = $row = '';

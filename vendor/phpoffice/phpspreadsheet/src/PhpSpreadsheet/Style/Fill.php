@@ -28,19 +28,19 @@ class Fill extends Supervisor
     const FILL_PATTERN_MEDIUMGRAY = 'mediumGray';
 
     /**
-     * @var null|int
+     * @var int
      */
     public $startcolorIndex;
 
     /**
-     * @var null|int
+     * @var int
      */
     public $endcolorIndex;
 
     /**
      * Fill type.
      *
-     * @var null|string
+     * @var string
      */
     protected $fillType = self::FILL_NONE;
 
@@ -168,7 +168,7 @@ class Fill extends Supervisor
     /**
      * Get Fill Type.
      *
-     * @return null|string
+     * @return string
      */
     public function getFillType()
     {
@@ -310,16 +310,5 @@ class Fill extends Supervisor
             ($this->getFillType() !== self::FILL_NONE ? $this->getEndColor()->getHashCode() : '') .
             __CLASS__
         );
-    }
-
-    protected function exportArray1(): array
-    {
-        $exportedArray = [];
-        $this->exportArray2($exportedArray, 'endColor', $this->getEndColor());
-        $this->exportArray2($exportedArray, 'fillType', $this->getFillType());
-        $this->exportArray2($exportedArray, 'rotation', $this->getRotation());
-        $this->exportArray2($exportedArray, 'startColor', $this->getStartColor());
-
-        return $exportedArray;
     }
 }
