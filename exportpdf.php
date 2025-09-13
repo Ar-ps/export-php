@@ -10,6 +10,14 @@ $options->set('isRemoteEnabled', true);
 
 $dompdf = new Dompdf($options);
 
+// Ambil file logo (pastikan path sesuai)
+$logoPath = __DIR__ . '/assetpdf/logo.png'; // contoh: file di folder yang sama
+if (!file_exists($logoPath)) {
+    die("❌ Logo tidak ditemukan: " . $logoPath);
+}
+$logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+
+
 $html = '
 <style>
     body { font-family: Arial, sans-serif; font-size: 11px; }
@@ -33,7 +41,9 @@ $html = '
 
 <table cellspacing="0" cellpadding="4" width="100%" style="border:none;">
     <tr>
-        <td rowspan="4" style="text-align:left;"><img src="/logo.png" alt="Logo"></td>
+        <td rowspan="4" style="text-align:center;">
+            <img src="' . $logoBase64 . '" alt="Logo" width="15%">
+        </td>
         <td style="text-align:center;"><h2>LAPORAN HASIL BELAJAR SISWA</h2></td>
     </tr>
     <tr>
